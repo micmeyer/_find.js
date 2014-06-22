@@ -5,17 +5,20 @@ var _find = (function (document) {
 
     "use strict";
 
+    // e.g. div.even
+    var TAG_WITH_CLASS = /(\w+)\\.(\w+)/g;
+
     // constructor
     function Finder() {
         this.first = true;
         this.result = null;
     }
 
-    Finder.prototype.byId = function (value) {
+    Finder.prototype.byId = function (id) {
         if (this.first) {
             this.first = false;
 
-            var element = document.getElementById(value);
+            var element = document.getElementById(id);
             if (element !== null) {
                 this.result = [element];
             } else {
@@ -47,12 +50,12 @@ var _find = (function (document) {
         return [];
     };
 
-    Finder.prototype.byClass = function (value) {
+    Finder.prototype.byClass = function (classes) {
         if (this.first) {
             this.first = false;
 
             // Search in the entire DOM
-            var htmlCollection1 = document.getElementsByClassName(value);
+            var htmlCollection1 = document.getElementsByClassName(classes);
             this.result = this.toArray(htmlCollection1);
         } else if (this.result.length === 0) {
             // Previous search did not lead to any elements, so this one can't either
@@ -63,7 +66,7 @@ var _find = (function (document) {
             // Use each element from the previous search(es) as root
             var length = this.result.length;
             for (var i = 0; i < length; i++) {
-                var htmlCollection2 = this.result[i].getElementsByClassName(value);
+                var htmlCollection2 = this.result[i].getElementsByClassName(classes);
                 newResult = newResult.concat(this.toArray(htmlCollection2));
             }
 
@@ -73,12 +76,12 @@ var _find = (function (document) {
         return this;
     };
 
-    Finder.prototype.byTag = function (value) {
+    Finder.prototype.byTag = function (tag) {
         if (this.first) {
             this.first = false;
 
             // Search in the entire DOM
-            var htmlCollection1 = document.getElementsByTagName(value);
+            var htmlCollection1 = document.getElementsByTagName(tag);
             this.result = this.toArray(htmlCollection1);
         } else if (this.result.length === 0) {
             // Previous search did not lead to any elements, so this one can't either
@@ -89,8 +92,63 @@ var _find = (function (document) {
             // Use each element from the previous search(es) as root
             var length = this.result.length;
             for (var i = 0; i < length; i++) {
-                var htmlCollection2 = this.result[i].getElementsByTagName(value);
+                var htmlCollection2 = this.result[i].getElementsByTagName(tag);
                 newResult = newResult.concat(this.toArray(htmlCollection2));
+            }
+
+            this.result = newResult;
+        }
+
+        return this;
+    };
+
+    Finder.prototype.toFilteredArray = function (htmlCollection, clazz) {
+        if (htmlCollection !== null) {
+            var length = htmlCollection.length;
+
+            if (htmlCollection.length > 0) {
+                // Make array too big and reduce size once
+                var result = new Array(htmlCollection.length);
+                var resultSize = 0;
+
+                for (var i = 0; i < length; i++) {
+                    var element = htmlCollection[i];
+
+                    if (element.className.split(/\s/).indexOf(clazz) >= 0) {
+                        result[resultSize++] = htmlCollection[i];
+                    }
+                }
+
+                // Fix size if needed
+                if (length !== resultSize) {
+                    result.length = resultSize;
+                }
+
+                return result;
+            }
+        }
+
+        return [];
+    };
+
+    Finder.prototype.byTagAndClass = function (tag, clazz) {
+        if (this.first) {
+            this.first = false;
+
+            // Search in the entire DOM
+            var htmlCollection1 = document.getElementsByTagName(tag);
+            this.result = this.toFilteredArray(htmlCollection1, clazz);
+        } else if (this.result.length === 0) {
+            // Previous search did not lead to any elements, so this one can't either
+            return this.result;
+        } else {
+            var newResult = [];
+
+            // Use each element from the previous search(es) as root
+            var length = this.result.length;
+            for (var i = 0; i < length; i++) {
+                var htmlCollection2 = this.result[i].getElementsByTagName(tag);
+                newResult = newResult.concat(this.toFilteredArray(htmlCollection2, clazz));
             }
 
             this.result = newResult;

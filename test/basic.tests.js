@@ -45,6 +45,29 @@ QUnit.test("_find.byTag with missing tag", function (assert) {
     assert.ok(_find().byTag("ul").element() === null);
 });
 
+QUnit.test("_find.byTagAndClass with existing tag/class", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<ul class='foo'>hello</ul>");
+
+    var elements = _find().byTagAndClass("ul", "foo").elements();
+    assert.ok(elements.length === 1);
+    assert.ok(elements[0].innerHTML === "hello");
+});
+
+QUnit.test("_find.byTagAndClass with missing tag", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div class='foo'></div>");
+
+    assert.ok(_find().byTagAndClass("ul", "foo").element() === null);
+});
+
+QUnit.test("_find.byTagAndClass with missing class", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div class='foo'></div>");
+
+    assert.ok(_find().byTagAndClass("div", "bar").element() === null);
+});
+
 QUnit.test("_find.byId and byClass", function (assert) {
     var $fixture = jQuery("#qunit-fixture");
     $fixture.append("<div id='foo'><span class='bar'></span><span class='bar'></span></div><span class='bar'></span>");
@@ -61,9 +84,18 @@ QUnit.test("_find.byId and byTag", function (assert) {
 
 QUnit.test("_find.byId and byTag and byClass", function (assert) {
     var $fixture = jQuery("#qunit-fixture");
-    $fixture.append("<div id='foo'><span></span><span class='bar'>hello</span></div><span class='bar'></span>");
+    $fixture.append("<div id='foo'><span></span><span><div class='bar'>hello</div></span></div><span class='bar'></span>");
 
     var elements = _find().byId("foo").byTag("span").byClass("bar").elements();
     assert.ok(elements.length === 1);
-    assert.ok(elements[0].innerText === "hello");
+    assert.ok(elements[0].innerHTML === "hello");
+});
+
+QUnit.test("_find.byId and byTagAndClass", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div id='foo'><span></span><span><div class='bar1'>hello</div></span></div><span class='bar2'></span>");
+
+    var elements = _find().byId("foo").byTagAndClass("div", "bar1").elements();
+    assert.ok(elements.length === 1);
+    assert.ok(elements[0].innerHTML === "hello");
 });
