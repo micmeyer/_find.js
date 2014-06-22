@@ -46,7 +46,7 @@ QUnit.test("_find.byTag with missing tag", function (assert) {
 
 QUnit.test("_find.byId and byClass", function (assert) {
     var $fixture = jQuery("#qunit-fixture");
-    $fixture.append("<div id='foo'><span class='bar'></span><span class='bar'></span></div>");
+    $fixture.append("<div id='foo'><span class='bar'></span><span class='bar'></span></div><span class='bar'></span>");
 
-    assert.ok(_find().byId("foo").byClass("bar").elements().length === 1);
+    assert.ok(_find().byId("foo").byClass("bar").elements().length === 2);
 });
