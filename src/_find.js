@@ -38,14 +38,18 @@ var _find = (function (document) {
             // Previous search did not lead to any elements, so this one can't either
             return this.result;
         } else {
-            var elements = [];
+            var newResult = [];
 
             // Use each element from the previous search(es) as root
             this.result.forEach(function (element) {
-                elements = elements.concat(element.getElementsByClassName(value));
+                var elements = element.getElementsByClassName(value);
+
+                if (elements.length > 0) {
+                    newResult = newResult.concat(Array.prototype.slice.call(elements));
+                }
             });
 
-            this.result = elements;
+            this.result = newResult;
         }
 
         return this;
@@ -61,14 +65,17 @@ var _find = (function (document) {
             // Previous search did not lead to any elements, so this one can't either
             return this.result;
         } else {
-            var elements = [];
+            var newResult = [];
 
             // Use each element from the previous search(es) as root
             this.result.forEach(function (element) {
-                elements = elements.concat(element.getElementsByTagName(value));
+                var elements = element.getElementsByTagName(value);
+
+                if (elements.length > 0) {
+                    newResult = newResult.concat(Array.prototype.slice.call(elements));
+                }
             });
 
-            this.result = elements;
         }
 
         return this;
