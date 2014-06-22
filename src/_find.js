@@ -28,6 +28,7 @@ var _find = (function (document) {
         return this;
     };
 
+
     Finder.prototype.byClass = function (value) {
         if (this.first) {
             this.first = false;
@@ -45,6 +46,7 @@ var _find = (function (document) {
                 var elements = element.getElementsByClassName(value);
 
                 if (elements.length > 0) {
+                    // http://jsperf.com/doms2array-slice-vs-for/6
                     newResult = newResult.concat(Array.prototype.slice.call(elements));
                 }
             });
