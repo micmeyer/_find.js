@@ -5,9 +5,6 @@ var _find = (function (document) {
 
     "use strict";
 
-    // e.g. div.even
-    var TAG_WITH_CLASS = /(\w+)\\.(\w+)/g;
-
     // constructor
     function Finder() {
         this.first = true;
