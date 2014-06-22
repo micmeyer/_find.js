@@ -15,7 +15,7 @@ var elements = _find().byId("foo").byClass("bar").elements();
 # Browser support
 This library uses the following native methods:
 
-* [getElementById] (http://caniuse.com/getelementsbyclassname)
+* getElementById
 * [getElementsByClassName] (http://caniuse.com/getelementsbyclassname)
 * getElementsByTagName
 
