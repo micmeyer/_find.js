@@ -1,3 +1,4 @@
+/* global document */
 /* exported _find */
 
 var _find = (function (document) {
@@ -22,19 +23,36 @@ var _find = (function (document) {
             }
 
         } else {
-            // Calling byId after having called an other method is wrong...
+            throw "You are calling byId() after having called an other method. For performance reasons you should call byId() first.";
         }
 
         return this;
     };
 
+    Finder.prototype.toArray = function (htmlCollection) {
+        if (htmlCollection !== null) {
+            var length = htmlCollection.length;
+
+            if (htmlCollection.length > 0) {
+                var result = new Array(htmlCollection.length);
+                for (var i = 0; i < length; i++) {
+                    result[i] = htmlCollection[i];
+                }
+
+                return result;
+            }
+        }
+
+        return [];
+    };
 
     Finder.prototype.byClass = function (value) {
         if (this.first) {
             this.first = false;
 
             // Search in the entire DOM
-            this.result = document.getElementsByClassName(value);
+            var htmlCollection1 = document.getElementsByClassName(value);
+            this.result = this.toArray(htmlCollection1);
         } else if (this.result.length === 0) {
             // Previous search did not lead to any elements, so this one can't either
             return this.result;
@@ -42,14 +60,11 @@ var _find = (function (document) {
             var newResult = [];
 
             // Use each element from the previous search(es) as root
-            this.result.forEach(function (element) {
-                var elements = element.getElementsByClassName(value);
-
-                if (elements.length > 0) {
-                    // http://jsperf.com/doms2array-slice-vs-for/6
-                    newResult = newResult.concat(Array.prototype.slice.call(elements));
-                }
-            });
+            var length = this.result.length;
+            for (var i = 0; i < length; i++) {
+                var htmlCollection2 = this.result[i].getElementsByClassName(value);
+                newResult = newResult.concat(this.toArray(htmlCollection2));
+            }
 
             this.result = newResult;
         }
