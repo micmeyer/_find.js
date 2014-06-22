@@ -34,6 +34,7 @@ var _find = (function (document) {
             var length = htmlCollection.length;
 
             if (htmlCollection.length > 0) {
+                // Initialize with correct size (This has huge impact on performance)
                 var result = new Array(htmlCollection.length);
                 for (var i = 0; i < length; i++) {
                     result[i] = htmlCollection[i];
@@ -77,7 +78,8 @@ var _find = (function (document) {
             this.first = false;
 
             // Search in the entire DOM
-            this.result = document.getElementsByTagName(value);
+            var htmlCollection1 = document.getElementsByTagName(value);
+            this.result = this.toArray(htmlCollection1);
         } else if (this.result.length === 0) {
             // Previous search did not lead to any elements, so this one can't either
             return this.result;
@@ -85,14 +87,13 @@ var _find = (function (document) {
             var newResult = [];
 
             // Use each element from the previous search(es) as root
-            this.result.forEach(function (element) {
-                var elements = element.getElementsByTagName(value);
+            var length = this.result.length;
+            for (var i = 0; i < length; i++) {
+                var htmlCollection2 = this.result[i].getElementsByTagName(value);
+                newResult = newResult.concat(this.toArray(htmlCollection2));
+            }
 
-                if (elements.length > 0) {
-                    newResult = newResult.concat(Array.prototype.slice.call(elements));
-                }
-            });
-
+            this.result = newResult;
         }
 
         return this;
