@@ -1,4 +1,4 @@
-# _find.js
+# _find.js [![Build Status](https://travis-ci.org/micmeyer/_find.js.svg?branch=master)](https://travis-ci.org/micmeyer/_find.js) [![Coverage Status](https://coveralls.io/repos/micmeyer/_find.js/badge.png)](https://coveralls.io/r/micmeyer/_find.js)
 
 Simple wrapper around the (fast) native selector methods that modern browsers support. 
 
