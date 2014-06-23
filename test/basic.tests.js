@@ -145,3 +145,26 @@ QUnit.test("_find.byId and _find.byClass (b && c)", function (assert) {
     assert.ok(elements[0].innerHTML === "tagA");
     assert.ok(elements[1].innerHTML === "tagB");
 });
+
+QUnit.test("_find with context", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div id='foo'><div class='a b c'>tagA</div></div><div id='bar'><div class='a b c'>tagB</div></div>");
+
+    var root = _find().byId("foo").element();
+    // Should only find the div inside of div#foo
+    var elements = _find(root).byClass("a").elements();
+    assert.ok(elements.length === 1);
+    assert.ok(elements[0].innerHTML === "tagA");
+});
+
+QUnit.test("_find with context (2)", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div id='foo'><div class='a b c'>tagA</div></div><div id='bar'><div class='a b c'>tagB</div></div>");
+
+    var root = _find().byId("foo", "bar").elements();
+    // Should find result in both divs
+    var elements = _find(root).byClass("a").elements();
+    assert.ok(elements.length === 2);
+    assert.ok(elements[0].innerHTML === "tagA");
+    assert.ok(elements[1].innerHTML === "tagB");
+});

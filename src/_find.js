@@ -6,9 +6,21 @@ var _find = (function (document) {
     "use strict";
 
     // constructor
-    function Finder() {
-        this.first = true;
-        this.result = null;
+    function Finder(context) {
+        if (typeof context !== "undefined") {
+            // Initialize with existing result
+            this.first = false;
+
+            if (context instanceof Array) {
+                this.result = context;
+            } else {
+                this.result = [context];
+            }
+        } else {
+            // Initialize for new search
+            this.first = true;
+            this.result = null;
+        }
     }
 
     Finder.prototype.byId = function () {
@@ -166,7 +178,7 @@ var _find = (function (document) {
     };
 
     // Usage: _find().byId("foo").element();
-    return function () {
-        return new Finder();
+    return function (context) {
+        return new Finder(context);
     };
 })(document);
