@@ -53,6 +53,14 @@ module.exports = function (grunt) {
             },
             all: ["test/**/*.html"]
         },
+        coveralls: {
+            options: {
+                force: false
+            },
+            main_target: {
+                src: "report/lcov.info"
+            }
+        },
         watch: {
             gruntfile: {
                 files: "<%= jshint.gruntfile.src %>",
@@ -72,6 +80,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-qunit-istanbul");
+    grunt.loadNpmTasks("grunt-coveralls");
 
     // Default task.
     grunt.registerTask("default", ["jshint", "qunit", "concat", "uglify"]);
