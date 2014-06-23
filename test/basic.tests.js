@@ -168,3 +168,37 @@ QUnit.test("_find with context (2)", function (assert) {
     assert.ok(elements[0].innerHTML === "tagA");
     assert.ok(elements[1].innerHTML === "tagB");
 });
+
+QUnit.test("_find.byId throws exception", function (assert) {
+    assert.throws(function () {
+            _find().byTag("span").byId("foo");
+        },
+        function (error) {
+            return error.name === "Error";
+        }
+    );
+});
+
+QUnit.test("_find.byId with missing id and byClass", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div id='foo'></div>");
+
+    var elements = _find().byId("bar").byClass("c1").elements();
+    assert.ok(elements.length === 0);
+});
+
+QUnit.test("_find.byId with missing id and byTag", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div id='foo'></div>");
+
+    var elements = _find().byId("bar").byTag("ul").elements();
+    assert.ok(elements.length === 0);
+});
+
+QUnit.test("_find.byId with missing id and byTagAndClass", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div id='foo'></div>");
+
+    var elements = _find().byId("bar").byTagAndClass("span", "c1").elements();
+    assert.ok(elements.length === 0);
+});

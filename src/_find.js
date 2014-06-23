@@ -38,7 +38,7 @@ var _find = (function (document) {
                 }
             }
         } else {
-            throw "You are calling byId() after having called an other method. For performance reasons you should call byId() first.";
+            throw new Error("You are calling byId() after having called an other method. For performance reasons you should call byId() first.");
         }
 
         return this;
@@ -69,10 +69,9 @@ var _find = (function (document) {
             // Search in the entire DOM
             var htmlCollection1 = document.getElementsByClassName(classes);
             this.result = this.toArray(htmlCollection1);
-        } else if (this.result.length === 0) {
-            // Previous search did not lead to any elements, so this one can't either
-            return this.result;
-        } else {
+        } else if (this.result.length >= 1) {
+            // Only execute this logic if the previous search returned at least one result
+
             var newResult = [];
 
             // Use each element from the previous search(es) as root
@@ -95,10 +94,9 @@ var _find = (function (document) {
             // Search in the entire DOM
             var htmlCollection1 = document.getElementsByTagName(tag);
             this.result = this.toArray(htmlCollection1);
-        } else if (this.result.length === 0) {
-            // Previous search did not lead to any elements, so this one can't either
-            return this.result;
-        } else {
+        } else if (this.result.length >= 1) {
+            // Only execute this logic if the previous search returned at least one result
+
             var newResult = [];
 
             // Use each element from the previous search(es) as root
@@ -150,10 +148,8 @@ var _find = (function (document) {
             // Search in the entire DOM
             var htmlCollection1 = document.getElementsByTagName(tag);
             this.result = this.toFilteredArray(htmlCollection1, clazz);
-        } else if (this.result.length === 0) {
-            // Previous search did not lead to any elements, so this one can't either
-            return this.result;
-        } else {
+        } else if (this.result.length >= 1) {
+            // Only execute this logic if the previous search returned at least one result
             var newResult = [];
 
             // Use each element from the previous search(es) as root
