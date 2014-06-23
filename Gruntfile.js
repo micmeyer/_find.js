@@ -40,7 +40,18 @@ module.exports = function (grunt) {
             }
         },
         qunit: {
-            files: ["test/**/*.html"]
+            options: {
+                "--web-security": "no",
+                coverage: {
+                    disposeCollector: false,
+                    src: ["src/_find.js"],
+                    instrumentedFiles: "temp/",
+                    htmlReport: "report/coverage",
+                    lcovReport: "report/",
+                    linesThresholdPct: 85
+                }
+            },
+            all: ["test/**/*.html"]
         },
         watch: {
             gruntfile: {
@@ -60,6 +71,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-qunit");
     grunt.loadNpmTasks("grunt-contrib-jshint");
     grunt.loadNpmTasks("grunt-contrib-watch");
+    grunt.loadNpmTasks("grunt-qunit-istanbul");
 
     // Default task.
     grunt.registerTask("default", ["jshint", "qunit", "concat", "uglify"]);
