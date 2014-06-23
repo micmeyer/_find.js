@@ -17,6 +17,25 @@ QUnit.test("_find.byId with missing id", function (assert) {
     assert.ok(_find().byId("bar").element() === null);
 });
 
+QUnit.test("_find.byId (2) with existing id", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div id='a'>tagA</div><div id='b'>tagB</div><div id='c'>tagC</div>");
+
+    var elements = _find().byId("a", "c").elements();
+    assert.ok(elements.length === 2);
+    assert.ok(elements[0].innerHTML === "tagA");
+    assert.ok(elements[1].innerHTML === "tagC");
+});
+
+QUnit.test("_find.byId (2) with only one existing id", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div id='a'>tagA</div><div id='b'>tagB</div><div id='c'>tagC</div>");
+
+    var elements = _find().byId("b", "z").elements();
+    assert.ok(elements.length === 1);
+    assert.ok(elements[0].innerHTML === "tagB");
+});
+
 QUnit.test("_find.byClass with existing class", function (assert) {
     var $fixture = jQuery("#qunit-fixture");
     $fixture.append("<div class='foo'></div>");
@@ -29,6 +48,23 @@ QUnit.test("_find.byClass with missing class", function (assert) {
     $fixture.append("<div class='foo'></div>");
 
     assert.ok(_find().byClass("bar").element() === null);
+});
+
+QUnit.test("_find.byClass (a && b)", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div class='a b c'></div>");
+
+    assert.ok(_find().byClass("a c").element() !== null);
+});
+
+QUnit.test("_find.byClass (b && c)", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div class='a b c'>tagA</div><div class='b c'>tagB</div><div class='c d'>tagC</div>");
+
+    var elements = _find().byClass("b c").elements();
+    assert.ok(elements.length === 2);
+    assert.ok(elements[0].innerHTML === "tagA");
+    assert.ok(elements[1].innerHTML === "tagB");
 });
 
 QUnit.test("_find.byTag with existing tag", function (assert) {
@@ -98,4 +134,14 @@ QUnit.test("_find.byId and byTagAndClass", function (assert) {
     var elements = _find().byId("foo").byTagAndClass("div", "bar1").elements();
     assert.ok(elements.length === 1);
     assert.ok(elements[0].innerHTML === "hello");
+});
+
+QUnit.test("_find.byId and _find.byClass (b && c)", function (assert) {
+    var $fixture = jQuery("#qunit-fixture");
+    $fixture.append("<div id='foo'><div class='a b c'>tagA</div><div class='b c'>tagB</div><div class='c d'>tagC</div></div>");
+
+    var elements = _find().byId("foo").byClass("b c").elements();
+    assert.ok(elements.length === 2);
+    assert.ok(elements[0].innerHTML === "tagA");
+    assert.ok(elements[1].innerHTML === "tagB");
 });

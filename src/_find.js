@@ -11,17 +11,20 @@ var _find = (function (document) {
         this.result = null;
     }
 
-    Finder.prototype.byId = function (id) {
+    Finder.prototype.byId = function () {
         if (this.first) {
             this.first = false;
 
-            var element = document.getElementById(id);
-            if (element !== null) {
-                this.result = [element];
-            } else {
-                this.result = [];
-            }
+            this.result = [];
 
+            for (var i = 0; i < arguments.length; i++) {
+                var id = arguments[i];
+                var element = document.getElementById(id);
+
+                if (element !== null) {
+                    this.result.push(element);
+                }
+            }
         } else {
             throw "You are calling byId() after having called an other method. For performance reasons you should call byId() first.";
         }
