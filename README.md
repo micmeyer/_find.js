@@ -12,6 +12,26 @@ A basic performance test can be found [here] (http://jsperf.com/find-js).
 var elements = _find().byId("foo").byClass("bar").elements();
 ```
 
+# Supported selectors
+
+```
+<div id="a">
+  <div class="c1 c2"></div>
+  <div class="c2 c3 c4"></div>
+  <div class="c3 c4"></div>
+</div>
+<div id="b">
+  <div class="c1 c2"></div>
+  <div class="c2 c3 c4"></div>
+  <div class="c3 c4"></div>
+</div>
+```
+
+| Operation          | Result        |
+| ------------------ | ------------- |
+| _find().byId("a")  | div#a         |
+| Content Cell       | Content Cell  |
+
 # Browser support
 This library uses the following native methods:
 
