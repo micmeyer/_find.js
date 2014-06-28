@@ -48,9 +48,9 @@ var _find = (function (document) {
         if (htmlCollection !== null) {
             var length = htmlCollection.length;
 
-            if (htmlCollection.length > 0) {
+            if (length > 0) {
                 // Initialize with correct size (This has huge impact on performance)
-                var result = new Array(htmlCollection.length);
+                var result = new Array(length);
                 for (var i = 0; i < length; i++) {
                     result[i] = htmlCollection[i];
                 }
@@ -116,16 +116,16 @@ var _find = (function (document) {
         if (htmlCollection !== null) {
             var length = htmlCollection.length;
 
-            if (htmlCollection.length > 0) {
+            if (length > 0) {
                 // Make array too big and reduce size once
-                var result = new Array(htmlCollection.length);
+                var result = new Array(length);
                 var resultSize = 0;
 
                 for (var i = 0; i < length; i++) {
                     var element = htmlCollection[i];
 
                     if (element.className.split(/\s/).indexOf(clazz) >= 0) {
-                        result[resultSize++] = htmlCollection[i];
+                        result[resultSize++] = element;
                     }
                 }
 
