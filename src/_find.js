@@ -26,10 +26,10 @@ var _find = (function (document) {
     Finder.prototype.byId = function () {
         if (this.first) {
             this.first = false;
-
             this.result = [];
 
-            for (var i = 0; i < arguments.length; i++) {
+            var length = arguments.length;
+            for (var i = 0; i < length; i++) {
                 var id = arguments[i];
                 var element = document.getElementById(id);
 
@@ -68,10 +68,11 @@ var _find = (function (document) {
 
             var newResult = [];
 
-            var length = this.result.length;
+            var localResult = this.result;
+            var length = localResult.length;
             for (var i = 0; i < length; i++) {
                 // Use each element from the previous search(es) as root
-                var htmlCollection2 = this.result[i].getElementsByClassName(classes);
+                var htmlCollection2 = localResult[i].getElementsByClassName(classes);
                 newResult = newResult.concat(this.toArray(htmlCollection2));
             }
 
