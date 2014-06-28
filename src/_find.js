@@ -49,7 +49,14 @@ var _find = (function (document) {
             var length = htmlCollection.length;
 
             if (length > 0) {
-                return Array.prototype.slice.call(htmlCollection);
+                // return Array.prototype.slice.call(htmlCollection);
+                // Initialize with correct size (This has huge impact on performance)
+                var result = new Array(htmlCollection.length);
+                for (var i = 0; i < length; i++) {
+                    result[i] = htmlCollection[i];
+                }
+
+                return result;
             }
         }
 
@@ -68,11 +75,10 @@ var _find = (function (document) {
 
             var newResult = [];
 
-            var localResult = this.result;
-            var length = localResult.length;
+            var length = this.result.length;
             for (var i = 0; i < length; i++) {
                 // Use each element from the previous search(es) as root
-                var htmlCollection2 = localResult[i].getElementsByClassName(classes);
+                var htmlCollection2 = this.result[i].getElementsByClassName(classes);
                 newResult = newResult.concat(this.toArray(htmlCollection2));
             }
 
