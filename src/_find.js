@@ -66,16 +66,16 @@ var _find = (function (document) {
         } else if (this.result.length >= 1) {
             // Only execute this logic if the previous search returned at least one result
 
-            var length = this.result.length;
-            var subResults = new Array(length);
+            var newResult = [];
 
+            var length = this.result.length;
             for (var i = 0; i < length; i++) {
                 // Use each element from the previous search(es) as root
                 var htmlCollection2 = this.result[i].getElementsByClassName(classes);
-                subResults[i] = this.toArray(htmlCollection2);
+                newResult = newResult.concat(this.toArray(htmlCollection2));
             }
 
-            this.result = Array.prototype.concat.apply([], subResults);
+            this.result = newResult;
         }
 
         return this;
