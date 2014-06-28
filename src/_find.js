@@ -49,13 +49,7 @@ var _find = (function (document) {
             var length = htmlCollection.length;
 
             if (length > 0) {
-                // Initialize with correct size (This has huge impact on performance)
-                var result = new Array(length);
-                for (var i = 0; i < length; i++) {
-                    result[i] = htmlCollection[i];
-                }
-
-                return result;
+                return Array.prototype.slice.call(htmlCollection);
             }
         }
 
