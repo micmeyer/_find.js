@@ -67,12 +67,12 @@ var _find = (function (document) {
             // Only execute this logic if the previous search returned at least one result
 
             var length = this.result.length;
-            var subResults = [];
+            var subResults = new Array(length);
 
             for (var i = 0; i < length; i++) {
                 // Use each element from the previous search(es) as root
                 var htmlCollection2 = this.result[i].getElementsByClassName(classes);
-                subResults.push(this.toArray(htmlCollection2));
+                subResults[i] = this.toArray(htmlCollection2);
             }
 
             this.result = Array.prototype.concat.apply([], subResults);
