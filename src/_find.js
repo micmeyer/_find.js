@@ -9,8 +9,6 @@ var _find = (function (document) {
     function Finder(context) {
         if (typeof context !== "undefined") {
             // Initialize with existing result
-            this.first = false;
-
             if (context instanceof Array) {
                 this.result = context;
             } else {
@@ -18,14 +16,12 @@ var _find = (function (document) {
             }
         } else {
             // Initialize for new search
-            this.first = true;
             this.result = null;
         }
     }
 
     Finder.prototype.byId = function () {
-        if (this.first) {
-            this.first = false;
+        if (this.result === null) {
             this.result = [];
 
             var length = arguments.length;
@@ -51,8 +47,10 @@ var _find = (function (document) {
             if (length > 0) {
                 // return Array.prototype.slice.call(htmlCollection);
                 // Initialize with correct size (This has huge impact on performance)
-                var result = new Array(htmlCollection.length);
-                for (var i = 0; i < length; i++) {
+                var result = new Array(length);
+                var i = length;
+
+                while (i--) {
                     result[i] = htmlCollection[i];
                 }
 
@@ -64,9 +62,7 @@ var _find = (function (document) {
     };
 
     Finder.prototype.byClass = function (classes) {
-        if (this.first) {
-            this.first = false;
-
+        if (this.result === null) {
             // Search in the entire DOM
             var htmlCollection1 = document.getElementsByClassName(classes);
             this.result = this.toArray(htmlCollection1);
@@ -89,9 +85,7 @@ var _find = (function (document) {
     };
 
     Finder.prototype.byTag = function (tag) {
-        if (this.first) {
-            this.first = false;
-
+        if (this.result === null) {
             // Search in the entire DOM
             var htmlCollection1 = document.getElementsByTagName(tag);
             this.result = this.toArray(htmlCollection1);
@@ -100,9 +94,9 @@ var _find = (function (document) {
 
             var newResult = [];
 
-            // Use each element from the previous search(es) as root
             var length = this.result.length;
             for (var i = 0; i < length; i++) {
+                // Use each element from the previous search(es) as root
                 var htmlCollection2 = this.result[i].getElementsByTagName(tag);
                 newResult = newResult.concat(this.toArray(htmlCollection2));
             }
@@ -118,7 +112,7 @@ var _find = (function (document) {
             var length = htmlCollection.length;
 
             if (length > 0) {
-                // Make array too big and reduce size once
+                // Make array too big and reduce size only once
                 var result = new Array(length);
                 var resultSize = 0;
 
@@ -143,9 +137,7 @@ var _find = (function (document) {
     };
 
     Finder.prototype.byTagAndClass = function (tag, clazz) {
-        if (this.first) {
-            this.first = false;
-
+        if (this.result === null) {
             // Search in the entire DOM
             var htmlCollection1 = document.getElementsByTagName(tag);
             this.result = this.toFilteredArray(htmlCollection1, clazz);
