@@ -61,15 +61,6 @@ var _find = (function (document) {
         return [];
     };
 
-    Finder.prototype.merge = function (array1, array2) {
-        var length1 = array1.length;
-
-        var i = array2.length;
-        while (i--) {
-            array1[i + length1] = array2[i];
-        }
-    };
-
     Finder.prototype.byClass = function (classes) {
         if (this.result === null) {
             // Search in the entire DOM
@@ -84,8 +75,7 @@ var _find = (function (document) {
             for (var i = 0; i < length; i++) {
                 // Use each element from the previous search(es) as root
                 var htmlCollection2 = this.result[i].getElementsByClassName(classes);
-                // newResult = newResult.concat(this.toArray(htmlCollection2));
-                this.merge(newResult, this.toArray(htmlCollection2));
+                newResult = newResult.concat(this.toArray(htmlCollection2));
             }
 
             this.result = newResult;
