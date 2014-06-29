@@ -45,16 +45,16 @@ var _find = (function (document) {
             var length = htmlCollection.length;
 
             if (length > 0) {
-                // return Array.prototype.slice.call(htmlCollection);
+                return Array.prototype.slice.call(htmlCollection);
                 // Initialize with correct size (This has huge impact on performance)
-                var result = new Array(length);
-                var i = length;
-
-                while (i--) {
-                    result[i] = htmlCollection[i];
-                }
-
-                return result;
+//                var result = new Array(length);
+//                var i = length;
+//
+//                while (i--) {
+//                    result[i] = htmlCollection[i];
+//                }
+//
+//                return result;
             }
         }
 
