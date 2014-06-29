@@ -8,7 +8,6 @@ module.exports = function (grunt) {
         // Metadata.
         pkg: grunt.file.readJSON("package.json"),
         banner: "/*! _find.js - v<%= pkg.version %> - <%= grunt.template.today('yyyy-mm-dd') %> */\n",
-        // Task configuration.
         concat: {
             options: {
                 banner: "<%= banner %>",
@@ -61,6 +60,21 @@ module.exports = function (grunt) {
                 src: "report/lcov.info"
             }
         },
+        bump: {
+            options: {
+                files: ["package.json"],
+                updateConfigs: [],
+                commit: true,
+                commitMessage: "Release v%VERSION%",
+                commitFiles: ["package.json"],
+                createTag: true,
+                tagName: "v%VERSION%",
+                tagMessage: "Version %VERSION%",
+                push: true,
+                pushTo: "upstream",
+                gitDescribeOptions: "--tags --always --abbrev=1 --dirty=-d"
+            }
+        },
         watch: {
             gruntfile: {
                 files: "<%= jshint.gruntfile.src %>",
@@ -81,6 +95,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-qunit-istanbul");
     grunt.loadNpmTasks("grunt-coveralls");
+    grunt.loadNpmTasks("grunt-bump");
 
     // Default task.
     grunt.registerTask("default", ["jshint", "qunit", "concat", "uglify"]);
