@@ -20,6 +20,55 @@ var _find = (function (document) {
         }
     }
 
+    Finder.prototype.toArray = function (htmlCollection) {
+        if (htmlCollection !== null) {
+            var length = htmlCollection.length;
+
+            if (length > 0) {
+                // Initialize with correct size
+                var result = new Array(length);
+
+                var i = length;
+                while (i--) {
+                    result[i] = htmlCollection[i];
+                }
+
+                return result;
+            }
+        }
+
+        return [];
+    };
+
+    Finder.prototype.toFilteredArray = function (htmlCollection, clazz) {
+        if (htmlCollection !== null) {
+            var length = htmlCollection.length;
+
+            if (length > 0) {
+                // Make array too big and reduce size only once
+                var result = new Array(length);
+                var resultSize = 0;
+
+                for (var i = 0; i < length; i++) {
+                    var element = htmlCollection[i];
+
+                    if (element.className.split(/\s/).indexOf(clazz) >= 0) {
+                        result[resultSize++] = element;
+                    }
+                }
+
+                // Fix size if needed
+                if (length !== resultSize) {
+                    result.length = resultSize;
+                }
+
+                return result;
+            }
+        }
+
+        return [];
+    };
+
     Finder.prototype.byId = function () {
         if (this.result === null) {
             this.result = [];
@@ -38,27 +87,6 @@ var _find = (function (document) {
         }
 
         return this;
-    };
-
-    Finder.prototype.toArray = function (htmlCollection) {
-        if (htmlCollection !== null) {
-            var length = htmlCollection.length;
-
-            if (length > 0) {
-                return Array.prototype.slice.call(htmlCollection);
-                // Initialize with correct size (This has huge impact on performance)
-//                var result = new Array(length);
-//                var i = length;
-//
-//                while (i--) {
-//                    result[i] = htmlCollection[i];
-//                }
-//
-//                return result;
-            }
-        }
-
-        return [];
     };
 
     Finder.prototype.byClass = function (classes) {
@@ -105,35 +133,6 @@ var _find = (function (document) {
         }
 
         return this;
-    };
-
-    Finder.prototype.toFilteredArray = function (htmlCollection, clazz) {
-        if (htmlCollection !== null) {
-            var length = htmlCollection.length;
-
-            if (length > 0) {
-                // Make array too big and reduce size only once
-                var result = new Array(length);
-                var resultSize = 0;
-
-                for (var i = 0; i < length; i++) {
-                    var element = htmlCollection[i];
-
-                    if (element.className.split(/\s/).indexOf(clazz) >= 0) {
-                        result[resultSize++] = element;
-                    }
-                }
-
-                // Fix size if needed
-                if (length !== resultSize) {
-                    result.length = resultSize;
-                }
-
-                return result;
-            }
-        }
-
-        return [];
     };
 
     Finder.prototype.byTagAndClass = function (tag, clazz) {
